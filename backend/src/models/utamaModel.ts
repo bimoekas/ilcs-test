@@ -9,7 +9,7 @@ interface UtamaAttributes {
   nomor_pendaftaran: string;
   tanggal_pendaftaran: string;
   kantor_pabean: string;
-  kode_skep_fasilitas: number;
+  kode_skep_fasilitas: string;
   jenis_pib: string;
   jenis_impor: string;
   cara_pembayaran: string;
@@ -28,7 +28,7 @@ class Utama
   public nomor_pendaftaran!: string;
   public tanggal_pendaftaran!: string;
   public kantor_pabean!: string;
-  public kode_skep_fasilitas!: number;
+  public kode_skep_fasilitas!: string;
   public jenis_pib!: string;
   public jenis_impor!: string;
   public cara_pembayaran!: string;
