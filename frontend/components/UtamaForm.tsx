@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { UtamaFormValues } from "@/types/form";
@@ -22,6 +23,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import axios from "axios";
 
 interface FormProps {
   hasPrevious: boolean;
@@ -30,6 +32,8 @@ interface FormProps {
 }
 
 const UtamaForm = ({ hasNext, hasPrevious, handleNext }: FormProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const form = useForm<UtamaFormValues>({
     defaultValues: {
       header_id: "b83d4415-59fa-5f71-bf61-05e587a244b6",
@@ -37,17 +41,33 @@ const UtamaForm = ({ hasNext, hasPrevious, handleNext }: FormProps) => {
       nomor_pendaftaran: "440e1430-8bc3-5205-b717-4ffea6af8d6a",
       tanggal_pengajuan: new Date(),
       tanggal_pendaftaran: new Date(),
-      kantor_pabean: undefined,
-      kode_skep_fasilitas: undefined,
-      jenis_pib: undefined,
-      jenis_impor: undefined,
-      cara_pembayaran: undefined,
-      transaksi: undefined,
+      kantor_pabean: "KPU Bea Cukai",
+      kode_skep_fasilitas: "SK-FA-001",
+      jenis_pib: "Tambah",
+      jenis_impor: "Impor Untuk Dipakai",
+      cara_pembayaran: "Transfer Bank",
+      transaksi: "B2B",
     },
   });
 
-  const onSubmit = (data: UtamaFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: UtamaFormValues) => {
+    try {
+      setIsLoading(true);
+
+      const res = await axios.post(`http://localhost:3001/api/utama`, data, {
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      if (res.status === 200) {
+        handleNext();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const kantorPabean = ["Ethan Salazar", "Isabella Briggs", "Charles Drake"];
